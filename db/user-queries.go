@@ -31,6 +31,7 @@ func CreateUsersTable(db *sql.DB) error {
 
 	_, err := db.Exec(query)
 	if err != nil {
+		fmt.Println("DB error:", err)
 		return fmt.Errorf("error creating users table: %w", err)
 	}
 	return nil
