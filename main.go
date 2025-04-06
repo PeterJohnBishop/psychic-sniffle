@@ -18,6 +18,12 @@ func main() {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 
+	err = mydb.CreateUsersTable(db)
+	if err != nil {
+		log.Fatalf("Error creating users table: %v", err)
+	}
+	defer db.Close()
+
 	err = server.StartServer(db)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
