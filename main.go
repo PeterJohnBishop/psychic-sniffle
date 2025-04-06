@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	mydb "psychic-sniffle/main.go/db"
+	"psychic-sniffle/main.go/server"
 )
 
 var db *sql.DB
@@ -17,8 +18,8 @@ func main() {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 
-	db.Ping()
+	err = server.StartServer(db)
 	if err != nil {
-		log.Fatalf("Error connecting to database: %v", err)
+		log.Fatalf("Error starting server: %v", err)
 	}
 }
