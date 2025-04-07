@@ -19,9 +19,11 @@ func StressGetServer() {
 	duration := 10 * time.Second
 	attacker := vegeta.NewAttacker()
 
+	serviceURL := "http://127.0.0.1:49457/"
+
 	targeter := func(t *vegeta.Target) error {
 		t.Method = "GET"
-		t.URL = "http://localhost:8080/"
+		t.URL = serviceURL
 		return nil
 	}
 

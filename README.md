@@ -28,6 +28,8 @@ kubectl port-forward svc/go-http-postgres 8080:8080 (to reach server at http://l
 
 # kubernetes commands w/ examples
 
+- Monitor Pods: kubectl logs -l app=go-http-postgres -f
+
 - Check Deployment & Replicas: kubectl get deployment go-http-postgres
     + go-http-postgres   3/3     3            3           123m
     + go-http-postgres-6466967844-mkz5t   1/1     Running   2 (20m ago)   21m

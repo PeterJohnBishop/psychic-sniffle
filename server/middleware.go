@@ -115,7 +115,7 @@ func IdentifyKubernetesPod(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		podName := os.Getenv("HOSTNAME")
 		w.Header().Set("X-Pod-Name", podName)
-
+		fmt.Println("Request received at pod:", podName)
 		next.ServeHTTP(w, r)
 	})
 }

@@ -3,8 +3,8 @@ package server
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
+	"net"
 	"net/http"
 )
 
@@ -25,7 +25,11 @@ func StartServer(db *sql.DB) error {
 	addTestingRoutes(mux)
 	addUserRoutes(db, mux)
 
-	fmt.Println("Server started at http://localhost:8080")
+	listener, err := net.Listen("tcp", ":8080")
+	if err != nil {
+		log.Fatal("Listen failed:", err)
+	}
+	log.Println("Listening on", listener.Addr())
 	err = http.ListenAndServe(":8080", handler)
 	return err
 }
