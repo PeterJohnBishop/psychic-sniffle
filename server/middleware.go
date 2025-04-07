@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	mydb "psychic-sniffle/main.go/db"
 	"strings"
 	"time"
@@ -108,4 +109,13 @@ func VerifyRefreshToken(next http.HandlerFunc) http.HandlerFunc {
 
 		next(w, r)
 	}
+}
+
+func IdentifyKubernetesPod(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		podName := os.Getenv("HOSTNAME")
+		w.Header().Set("X-Pod-Name", podName)
+
+		next.ServeHTTP(w, r)
+	})
 }

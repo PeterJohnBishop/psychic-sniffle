@@ -8,23 +8,33 @@ import (
 	"net/http"
 )
 
-func StartServer(db *sql.DB) error {
+var DatabaseStatus string
 
-	var databaseStatus string
+func StartServer(db *sql.DB) error {
 
 	err := db.Ping()
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	} else {
-		databaseStatus = "connected"
+		DatabaseStatus = "connected"
 	}
 
 	mux := http.NewServeMux()
+	handler := IdentifyKubernetesPod(mux)
 
+	addTestingRoutes(mux)
+	addUserRoutes(db, mux)
+
+	fmt.Println("Server started at http://localhost:8080")
+	err = http.ListenAndServe(":8080", handler)
+	return err
+}
+
+func addTestingRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{
 			"message":         "psychic-sniffle server is running",
-			"database_status": databaseStatus,
+			"database_status": DatabaseStatus,
 		}
 
 		jsonResponse, err := json.Marshal(response)
@@ -37,12 +47,6 @@ func StartServer(db *sql.DB) error {
 		w.WriteHeader(http.StatusOK)
 		w.Write(jsonResponse)
 	})
-
-	addUserRoutes(db, mux)
-
-	fmt.Println("Server started at http://localhost:8080")
-	err = http.ListenAndServe(":8080", mux)
-	return err
 }
 
 func addUserRoutes(db *sql.DB, mux *http.ServeMux) {
