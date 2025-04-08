@@ -1,5 +1,9 @@
 # psychic-sniffle
 
+A quick app to demonstrate kubernetes load balancing. 
+
+Run main.go at server/stress to initiate a stress test making 1000 calls in 10 seconds. Watch the kubernetes logs to see which pod is being used for each request!
+
 # docker deployment
 
 setup .env file (see https://hub.docker.com/_/postgres for postgres setup!)
